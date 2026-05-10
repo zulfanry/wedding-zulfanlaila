@@ -560,6 +560,28 @@
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
 
+    // Fungsi ini akan langsung berjalan saat halaman dimuat
+    function tampilkanNamaTamu() {
+        // 1. Ambil seluruh teks di alamat bar browser
+        const queryString = window.location.search;
+        
+        // 2. Gunakan URLSearchParams untuk mencari parameter "to"
+        const urlParams = new URLSearchParams(queryString);
+        const namaTamu = urlParams.get('to');
+
+        // 3. Cari elemen <h3> dengan ID "guest-name"
+        const elemenNama = document.getElementById('guest-name');
+
+        if (namaTamu && elemenNama) {
+            // Bersihkan teks (mengubah + atau %20 menjadi spasi biasa)
+            const namaBersih = decodeURIComponent(namaTamu);
+            // Tampilkan nama di website
+            elemenNama.innerText = namaBersih;
+        }
+    }
+
+    // Jalankan fungsi di atas segera setelah dokumen siap
+    document.addEventListener("DOMContentLoaded", tampilkanNamaTamu);
 
 
     // --- SKRIP NAMA UNDANGAN OTOMATIS ---
