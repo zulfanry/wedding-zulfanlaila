@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Zulfan & Laila</title>
+    
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<style>
+        :root {
+            --black-matte: #0a0a0a;
+            --gold-solid: #c5a059;
+            --white-soft: #f4f4f4;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+		
+		/* Efek Partikel Cahaya Emas */
+.gold-particle {
+    position: fixed;
+    top: -10px;
+    background: radial-gradient(circle, #c5a059 0%, rgba(197, 160, 89, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) translateX(20px);
+    }
+}
+
+        /* PERBAIKAN POIN 2: Smooth Scroll */
+        html { scroll-behavior: smooth; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black-matte); color: var(--white-soft); font-family: 'Montserrat', sans-serif; overflow: hidden; line-height: 1.6; }
+        body::before { content: ""; position: fixed; top: 15px; bottom: 15px; left: 15px; right: 15px; border: 1px solid rgba(197, 160, 89, 0.3); pointer-events: none; z-index: 1001; }
+        h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .gold { color: var(--gold-solid); }
+
+        /* Hero Overlay */
+        .hero { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; z-index: 2000; transition: transform 1s ease-in-out; }
+        .hero.open { transform: translateY(-100%); }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt') center/cover; transform: scale(1.1); animation: slowZoom 20s infinite alternate; }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .hero-content { z-index: 10; padding: 20px; }
+
+        /* Main Content */
+        main { display: block; opacity: 0; transition: opacity 1s; }
+        main.visible { opacity: 1; }
+        section { position: relative; padding: 80px 5%; min-height: auto; display: flex; flex-direction: column; justify-content: center; }
+        
+        /* PERBAIKAN POSISI ANGKA: Agar tidak tertutup/ngepress */
+        .section-number { font-family: 'Cinzel', serif; font-size: 5rem; position: absolute; top: 20px; left: 5%; opacity: 0.1; color: var(--gold-solid); z-index: 1; }
+
+        /* Story & Photos */
+        .story-container { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; position: relative; z-index: 2; }
+        .story-img { flex: 1; min-width: 300px; }
+        .story-img img { width: 100%; height: 500px; object-fit: cover; border: 1px solid var(--gold-solid); }
+        
+        /* Gallery Grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 30px; }
+        .gallery-item { height: 250px; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: grayscale(50%); }
+        .gallery-item img:hover { transform: scale(1.1); filter: grayscale(0%); }
+
+        /* Cards & Buttons */
+        .event-card { background: var(--glass); border: 1px solid rgba(197, 160, 89, 0.2); padding: 50px 30px; text-align: center; backdrop-filter: blur(5px); margin-bottom: 20px; }
+        .btn-luxury { display: inline-block; padding: 12px 35px; background: transparent; color: var(--gold-solid); border: 1px solid var(--gold-solid); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; cursor: pointer; transition: 0.4s; text-decoration: none; margin-top: 20px; }
+        .btn-luxury:hover:not(:disabled) { background: var(--gold-solid); color: black; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4); }
+        
+        /* PERBAIKAN POIN 4: Feedback Visual Tombol */
+        .btn-luxury:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+        #music-control { position: fixed; bottom: 30px; left: 30px; z-index: 1500; background: rgba(0,0,0,0.6); border: 1px solid var(--gold-solid); width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: var(--gold-solid); }
+        
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) { 
+            .hero-content h1 { font-size: 3rem; } 
+            .story-img img { height: 350px; } 
+            section { padding: 100px 5% 60px; } /* Tambah padding atas mobile agar angka section aman */
+            
+            /* PERBAIKAN TATA LETAK MEMPELAI (MOBILE) */
+            .groom-mobile { flex-direction: column !important; }
+            .groom-mobile .story-text { text-align: right !important; width: 100%; margin-bottom: 20px; }
+            .groom-mobile .story-img { align-self: flex-end; width: 85%; } /* Pria Rata Kanan */
+
+            .bride-mobile { flex-direction: column !important; }
+            .bride-mobile .story-text { text-align: left !important; width: 100%; margin-bottom: 20px; }
+            .bride-mobile .story-img { align-self: flex-start; width: 85%; } /* Wanita Rata Kiri */
+            
+            /* Perbaikan posisi angka di Section 4 agar tidak ngepress */
+            section:nth-of-type(4) { padding-top: 140px; }
+            section:nth-of-type(4) .section-number { top: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="music-control" onclick="toggleMusic()"><i class="fas fa-play" id="music-icon"></i></div>
+    <audio id="bg-audio" loop preload="auto"><source src="https://files.catbox.moe/b5fkrl.mp3" type="audio/mpeg"></audio>
+
+    <!-- HERO SECTION -->
+    <div class="hero" id="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h2 style="letter-spacing: 5px; font-weight: 200;">THE WEDDING OF</h2>
+            <h1 style="font-size: clamp(3rem, 8vw, 5rem); margin: 10px 0; color: var(--gold-solid);">Zulfan <span class="gold">&</span> Laila</h1>
+            <p style="letter-spacing: 8px; margin-bottom: 40px;">31 MEI 2026</p>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.8;">KEPADA YTH </p>
+                <h3 id="guest-name" style="font-size: 1.5rem;">Bapak/Ibu/Saudara Undangan</h3>
+            </div>
+
+            <button class="btn-luxury" onclick="openInvitation()">
+                <i class="fa-solid fa-envelope-open-text" style="margin-right: 10px;"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+        
+        <!-- SECTION 1: PUISI & FOTO -->
+        <section data-aos="fade-up">
+            <div class="story-container" style="justify-content: center; text-align: center;">
+                <div style="max-width: 600px;">
+<!-- PUISI JAWA -->
+            <h3 class="gold" style="font-style: italic; font-size: 2.5rem; margin-bottom: 15px;">"Manunggaling Katresnan"</h3>
+            <p style="font-size: 0.8rem; font-style: italic; line-height: 2; letter-spacing: 1px; color: var(--white-soft);">
+                Nalika raga kacancang ing donga,<br>
+                Nunggal siji ing kersaning Gusti.<br>
+                Mbangun bale wisma kanthi tulus becik,<br>
+                Setya sanyata nganti puputing yuswa.<br>
+                Mugi dadi mulyaning bebrayan,<br>
+                Sakinah, Mawaddah, lan Warahmah.
+            </p>
+
+
+                    <div style="margin-top: 40px; border: 1px solid var(--gold-solid); padding: 10px;">
+                        <img src="https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt" style="width: 100%; height: 300px; object-fit: cover;" alt="Prewedding">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MEMPELAI -->
+<section id="mempelai" style="padding-top: 100px; overflow: hidden;">
+    <span class="section-number" style="top: 20px;">01</span>
+    
+    <div class="story-container" style="display: flex; align-items: center; justify-content: flex-end; gap: 15px; margin-bottom: 80px; flex-wrap: nowrap;">
+        <div class="story-text" data-aos="fade-right" style="flex: 1; text-align: right;">
+            <h3 class="gold" style="font-size: clamp(1.3rem, 4vw, 2rem); margin-bottom: 5px;">Achmad Zulfan Ramadhany</h3>
+            <p style="font-size: 0.9rem; color: #fff; line-height: 1.2;">Putra Bpk. Usman & Ibu Lilik Hartini</p>
+            <p style="font-size: 0.75rem; opacity: 0.6; color: #fff;">Prigen, Pasuruan</p>
+        </div>
+        
+        <div class="story-img" data-aos="zoom-in" style="flex: 0 0 48%; max-width: 280px; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.8) 100%); z-index: 2; pointer-events: none;"></div>
+            <img src="https://lh3.googleusercontent.com/d/1fYywkeFbKHCevlWWHmjZB5kLYwZG39Ny" alt="Groom" style="width: 100%; border: 1px solid rgba(197, 160, 89, 0.5); display: block; position: relative; z-index: 1;">
+        </div>
+    </div>
+
+    <div class="story-container" style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; flex-direction: row-reverse; flex-wrap: nowrap;">
+        <div class="story-text" data-aos="fade-left" style="flex: 1; text-align: left;">
+            <h3 class="gold" style="font-size: clamp(1.3rem, 4vw, 2.2rem); margin-bottom: 5px;">Laila Chusnul Ramadhan</h3>
+            <p style="font-size: 0.9rem; color: #fff; line-height: 1.2;">Putri Alm. Bpk Sunarto & Ibu Ismiasih</p>
+            <p style="font-size: 0.75rem; opacity: 0.6; color: #fff;">Krembung, Sidoarjo</p>
+        </div>
+
+        <div class="story-img" data-aos="zoom-in" style="flex: 0 0 48%; max-width: 280px; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.8) 100%); z-index: 2; pointer-events: none;"></div>
+            <img src="https://lh3.googleusercontent.com/d/1SH0BBV6YeVuD2mPOvn7ZEZCZvIqQaddA" alt="Bride" style="width: 100%; border: 1px solid rgba(197, 160, 89, 0.5); display: block; position: relative; z-index: 1;">
+        </div>
+    </div>
+</section>
+
+        <!-- SECTION 3: GALERI FOTO -->
+        <section style="background: #0d0d0d;">
+            <span class="section-number">02</span>
+            <h2 class="gold" style="text-align: center; font-size: 2.5rem; margin-bottom: 10px;">Our Gallery</h2>
+            <p style="text-align: center; font-size: 0.8rem; opacity: 0.6; letter-spacing: 3px; margin-bottom: 30px;">MOMENTS OF LOVE</p>
+
+			
+            <div class="gallery-grid" data-aos="fade-up">
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1ga6Yj-0872sKBYgzVSFazkUsNENJZ5qh" alt="1"></div>
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1PSpHq-mftpfDugdXI5g61m6mQX9spJvy" alt="2"></div>
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1qFi2a0wrh49dRixTbQzyfDZtVtWuwQ9s" alt="3"></div>
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt" alt="4"></div>
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1yTBRntxxCmNwcGNCU5PTzvNkS81aUkeR" alt="5"></div>
+                <div class="gallery-item"><img src="https://lh3.googleusercontent.com/d/1o19Pnt9f4K_mpIm6tw30azupFWWmYEDJ" alt="6"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ACARA -->
+        <section>
+            <span class="section-number">03</span>
+            <h2 class="gold" style="text-align: center; font-size: 2.5rem; margin-bottom: 40px;">Wedding Event</h2>
+            <div class="event-grid">
+                <div class="event-card" data-aos="fade-up">
+                    <i class="fa-solid fa-ring gold" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3 class="">Akad Nikah</h3>
+                    <p style="margin: 15px 0;">Sabtu, 30 Mei 2026<br>15.00 WIB - Selesai</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Jl. Sungai Barito RT 004 RW 002<br>Krembung Timur Sidoarjo</p>
+                </div>
+                <div class="event-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-champagne-glasses gold" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3>Resepsi</h3>
+                    <p style="margin: 15px 0;">Minggu, 31 Mei 2026<br>Pukul Bebas</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Dusun Pakel RT 001 RW 004<br>Desa Sukoreno, Kec. Prigen</p>
+                    <a href="https://maps.app.goo.gl/MDpUzmfQrqaAEH8P6" target="_blank" class="btn-luxury">Buka Lokasi</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP & GIFT -->
+        <section>
+            <section style="padding-top: 185px; padding-bottom: 80px;"> <span class="section-number" style="top: 40px; left: 5%; z-index: 1;">04</span> <div class="story-container" style="position: relative; z-index: 2;">
+        <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
+                <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
+                    <h2 class="font-serif gold">RSVP & Wishes</h2>
+                    <form id="rsvp-form" style="margin-top: 25px;">
+                        <input type="text" id="nama" placeholder="Nama Anda" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:15px; outline:none;" required>
+                        <select id="kehadiran" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:15px; outline:none;">
+                            <option value="Hadir" style="background:#0a0a0a;">Saya Akan Hadir</option>
+                            <option value="Berhalangan" style="background:#0a0a0a;">Maaf, Berhalangan</option>
+                        </select>
+                        <textarea id="pesan" placeholder="Ucapan & Doa Restu" rows="3" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:20px; outline:none;" required></textarea>
+                        <button type="submit" id="btn-submit" class="btn-luxury" style="width: 100%;">Kirim Ucapan</button>
+                    </form>
+                    <div id="container-pesan"></div>
+                </div>
+
+                <div class="event-card" style="flex: 1;" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-gift gold" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3 class="font-serif gold">Wedding Gift</h3>
+                    <p style="font-size: 0.8rem; margin-bottom: 20px;">Bagi keluarga, sahabat & rekan yang ingin mengirimkan tanda kasih :</p>
+
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 15px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg" alt="Mandiri" style="height: 20px; margin-bottom: 10px; filter: brightness(0) invert(1);">
+                        <p style="font-size: 1.1rem; letter-spacing: 2px; margin: 5px 0; font-weight: 600;">1440026540507</p>
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px;">Achmad Zulfan Ramadhany</p>
+                        <button onclick="copyText('1440026540507')" class="btn-luxury" style="padding: 5px 15px; font-size: 0.6rem; margin-top: 0;">Salin Rekening</button>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 15px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="height: 25px; margin-bottom: 10px; filter: brightness(0) invert(1);">
+                        <p style="font-size: 1.1rem; letter-spacing: 2px; margin: 5px 0; font-weight: 600;">4110907261</p>
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px;">Laila Chusnul Ramadhan</p>
+                        <button onclick="copyText('4110907261')" class="btn-luxury" style="padding: 5px 15px; font-size: 0.6rem; margin-top: 0;">Salin Rekening</button>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid rgba(197,160,89,0.2);">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Dana_logo.png" alt="DANA" style="height: 25px; margin-bottom: 10px; filter: brightness(0) invert(1);">
+                        <p style="font-size: 1.1rem; letter-spacing: 2px; margin: 5px 0; font-weight: 600;">081230448415</p>
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px;">Achmad Zulfan Ramadhany</p>
+                        <button onclick="copyText('081230448415')" class="btn-luxury" style="padding: 5px 15px; font-size: 0.6rem; margin-top: 0;">Salin Nomor</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		<!-- SECTION 5: GALERI FOTO TAMU -->
+		
+<section id="guest-gallery" class="gallery-section" style="padding: 60px 20px; text-align: center; background-color: #000; color: #fff;" data-aos="fade-up">
+    <div class="container">
+        <h2 style="font-family: 'Playfair Display', serif; color: #c5a059; margin-bottom: 10px;">Galeri Foto Tamu</h2>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px;">Saksikan momen pernikahan ini bersama Bapak/Ibu tamu undangan</p>
+        <p style="font-size: 0.8rem; color: #c5a059; font-weight: bold; margin-bottom: 30px; letter-spacing: 1px;">
+            <i class="fa-regular fa-calendar-check"></i> AKAN KAMI RILIS PADA 3 JUNI 2026
+        </p>
+        
+        <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid #c5a059; display: inline-block; max-width: 400px; width: 100%;">
+            <div id="qrcode-container" style="background: #fff; padding: 15px; border-radius: 10px; display: inline-block; margin-bottom: 20px; position: relative;">
+                <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://drive.google.com/drive/folders/1kYO7NpgAauc5dtskudHvmrK8zI6PrGA3?usp=drive_link" alt="QR Code Galeri" style="width: 180px; height: 180px;">
+            </div>
+            
+            <p style="font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                Scan QR Code di atas untuk menyimpan link, atau klik tombol di bawah untuk melihat galeri
+            </p>
+            
+            <a href="https://drive.google.com/drive/folders/1kYO7NpgAauc5dtskudHvmrK8zI6PrGA3?usp=drive_link" target="_blank" class="btn-gallery" style="display: inline-block; padding: 12px 25px; background-color: #c5a059; color: #000; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.3s; width: 80%;">
+                <i class="fa-brands fa-google-drive"></i> BUKA GALERI FOTO
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-gallery:hover {
+        background-color: #a8894a;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+    }
+    #qrcode-container img {
+        display: block;
+    }
+</style>
+		
+		
+				<!-- SECTION 6: PENUTUP -->
+
+<section data-aos="fade-up" style="text-align: center; padding: 120px 5%; position: relative; overflow: hidden;">
+
+    <div style="margin-bottom: 60px;">
+        <h2 class="gold" style="font-size: 2.5rem; margin-bottom: 25px; letter-spacing: 3px;">Terima Kasih</h2>
+        <p style="max-width: 650px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; color: var(--white-soft); opacity: 0.9; font-style: italic;">
+            "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kami."
+        </p>
+    </div>
+
+    <div style="background: var(--glass); border: 1px solid rgba(197, 160, 89, 0.2); backdrop-filter: blur(10px); padding: 50px 30px; max-width: 800px; margin: 0 auto; border-radius: 2px;">
+        
+        <i class="fa-solid fa-hands-praying gold" style="font-size: 1.5rem; margin-bottom: 20px; opacity: 0.8;"></i>
+        <h3 class="gold" style="font-size: 2rem; margin-bottom: 30px; letter-spacing: 2px;">Doa Munajat</h3>
+        
+        <div style="width: 50px; height: 1px; background: var(--gold-solid); margin: 0 auto 30px; opacity: 0.5;"></div>
+
+        <div style="font-size: 0.95rem; line-height: 2; color: var(--white-soft); text-align: center; letter-spacing: 0.5px;">
+            <p style="font-weight: 600; margin-bottom: 20px; color: var(--gold-solid);">Ya Allah Ya Rahman Ya Rahim Ya Hayyu Ya Qayyum Ya Dzaljalal wal Ikram</p>
+            
+            
+            <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
+                Ya Allah ampunilah sekalian dosa-dosa kami, ampunilah dosa kedua orang tua kami, serta umat Muhammad menyeluruh dan merata di muka bumi ini.
+            </p>
+
+            <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
+                Sehatkanlah dan panjangkanlah usia <strong>Guru kami</strong> agar lebih lama membimbing dan menuntun kami ke jalan-Mu yang lurus. Selamat sejahterahkanlah beliau beserta keluarga dan kerabatnya.
+            </p>
+
+            <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
+                Sehatkanlah batang tubuh kami semata-mata untuk berubudiyah kepada-Mu. Bukalah dinding tirai hijab pembatas antara kami dengan Engkau. Mudahkanlah dan lapangkanlah rejeki bagi kami semata-mata untuk puja puji kebesaran-Mu.
+            </p>
+
+            <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
+                Berilah kami ketenangan, kedamaian, penerimaan, keikhlasan, kesyukuran, keberlimpahan, keselarasan, keberdayaan dan keberkahan-Mu. Beri kami petunjuk-Mu yang mudah kami mengerti.
+            </p>
+
+            <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
+                Gerakkanlah diri kami semau-Mu, sekehendak-Mu, walau kami mengerti dan tidak harus mengerti. Jadikanlah kami orang yang paling bersyukur kepada-Mu.
+            </p>
+
+            <div style="margin-top: 40px; padding: 20px; border-top: 1px solid rgba(197, 160, 89, 0.1);">
+                <p class="gold" style="font-size: 1.1rem; font-style: italic;">
+                    "Rabbanā, ātinā fid dunyā hasanah, wa fil ākhirati hasanah, wa qinā ‘adzāban nār."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <footer style="text-align: center; padding: 40px 20px; opacity: 0.3; font-size: 0.7rem;">
+            <p>&copy; 2026 Wedding of Zulfan & Laila. Created by Sahabat Kreasi Group</p>
+        </footer>
+    </main>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+
+function createGoldParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('gold-particle');
+    
+    // Ukuran partikel dibuat kecil agar elegan (2px sampai 5px)
+    const size = Math.random() * 3 + 2;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    // Posisi horizontal acak
+    particle.style.left = Math.random() * 100 + 'vw';
+    
+    // Durasi jatuh (dibuat lambat agar tenang)
+    const duration = Math.random() * 7 + 8;
+    particle.style.animationDuration = duration + 's';
+    
+    // Transparansi acak untuk efek kedalaman
+    particle.style.opacity = Math.random() * 0.6 + 0.2;
+    
+    // Efek blur halus agar seperti cahaya
+    particle.style.filter = `blur(${Math.random() * 1}px)`;
+
+    document.body.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, duration * 1000);
+}
+
+// Jalankan partikel (interval 200ms agar cukup padat tapi ringan)
+setInterval(createGoldParticle, 200);
+
+
+    // 1. KONFIGURASI DATABASE
+    // Ganti URL di bawah ini dengan URL Web App yang Anda dapatkan setelah Deploy Google Apps Script
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQtiOow439Kt8aQBEnYXPa9q4S4szFGhE64UNmzGMrpX50NkCGGVrx_iMURTYEoMdg1Q/exec'; 
+
+    // 2. INISIALISASI ANIMASI (AOS)
+    AOS.init({ duration: 1000, once: true });
+
+    // 3. LOGIC BUKA UNDANGAN
+    function openInvitation() {
+        // Menghilangkan overlay hero
+        document.getElementById('hero-section').classList.add('open');
+        // Memunculkan konten utama
+        document.getElementById('main-content').classList.add('visible');
+        // Mengaktifkan scroll pada body
+        document.body.style.overflow = 'auto';
+        // Memunculkan tombol musik
+        document.getElementById('music-control').style.display = 'flex';
+        // Memutar musik otomatis saat dibuka
+        if (!isPlaying) toggleMusic();
+    }
+
+    // 4. LOGIC MUSIK
+    let audio = document.getElementById("bg-audio");
+    let icon = document.getElementById("music-icon");
+    let isPlaying = false;
+
+    function toggleMusic() {
+        if (isPlaying) { 
+            audio.pause(); 
+            icon.classList.replace("fa-pause", "fa-play"); 
+        } else { 
+            audio.play(); 
+            icon.classList.replace("fa-play", "fa-pause"); 
+        }
+        isPlaying = !isPlaying;
+    }
+
+    // 5. LOGIC SALIN REKENING
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Berhasil disalin: " + text);
+        }).catch(err => {
+            console.error('Gagal menyalin: ', err);
+        });
+    }
+
+    // 6. LOGIC RSVP & WISHES (DENGAN FETCH API)
+    const rsvpForm = document.getElementById('rsvp-form');
+    const containerPesan = document.getElementById('container-pesan');
+    const btnSubmit = document.getElementById('btn-submit');
+
+    // A. Fungsi Mengambil Pesan dari Google Sheets
+    async function loadWishes() {
+        containerPesan.innerHTML = '<p style="font-size:0.8rem; opacity:0.5; text-align:center;">Memuat ucapan...</p>';
+        try {
+            const response = await fetch(SCRIPT_URL);
+            const data = await response.json();
+            
+            if (!data || data.length === 0) {
+                containerPesan.innerHTML = '<p style="font-size:0.8rem; opacity:0.5; text-align:center;">Belum ada ucapan.</p>';
+                return;
+            }
+
+            // Render data ke HTML (dibalik agar yang terbaru di atas)
+            containerPesan.innerHTML = data.map(row => `
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 3px solid #c5a059;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color: #c5a059;">${row[0]}</strong>
+                        <span style="font-size: 0.6rem; opacity: 0.4;">${new Date(row[3]).toLocaleDateString('id-ID')}</span>
+                    </div>
+                    <small style="opacity:0.5; display:block; font-size:0.7rem; margin-bottom: 5px;">
+                        <i class="fa-solid fa-circle-check" style="color: #c5a059;"></i> ${row[1]}
+                    </small>
+                    <p style="font-size: 0.9rem; font-style: italic; color: #ddd;">"${row[2]}"</p>
+                </div>
+            `).reverse().join('');
+        } catch (err) {
+            containerPesan.innerHTML = '<p style="color:#ff6b6b; font-size:0.8rem; text-align:center;">Gagal memuat daftar ucapan.</p>';
+            console.error("Error load data:", err);
+        }
+    }
+
+    // Jalankan pengambilan data saat halaman pertama kali dimuat
+    loadWishes();
+
+    // B. Fungsi Mengirim Pesan ke Google Sheets
+    rsvpForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // MENCEGAH HALAMAN RELOAD/KEMBALI KE AWAL
+
+        // Proteksi agar tidak klik ganda saat loading
+        btnSubmit.disabled = true;
+        btnSubmit.innerText = "SEDANG MENGIRIM...";
+
+        const formData = {
+            nama: document.getElementById('nama').value,
+            status: document.getElementById('kehadiran').value,
+            pesan: document.getElementById('pesan').value
+        };
+
+        // Mengirim data menggunakan metode POST
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        })
+        .then(res => {
+            alert("Alhamdulillah, ucapan dan doa Anda telah tersimpan.");
+            rsvpForm.reset(); // Kosongkan form
+            loadWishes();    // Muat ulang daftar ucapan agar yang baru muncul
+        })
+        .catch(err => {
+            alert("Terjadi kesalahan sistem. Silakan coba lagi nanti.");
+            console.error("Error post data:", err);
+        })
+        .finally(() => {
+            // Mengembalikan tombol ke keadaan semula
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = "KIRIM UCAPAN";
+        });
+    });
+</script>
+</body>
+</html>
