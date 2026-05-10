@@ -561,24 +561,23 @@
 <script>
 
     // Fungsi ini akan langsung berjalan saat halaman dimuat
-    function tampilkanNamaTamu() {
-        // 1. Ambil seluruh teks di alamat bar browser
-        const queryString = window.location.search;
-        
-        // 2. Gunakan URLSearchParams untuk mencari parameter "to"
-        const urlParams = new URLSearchParams(queryString);
-        const namaTamu = urlParams.get('to');
 
-        // 3. Cari elemen <h3> dengan ID "guest-name"
+    // Langsung jalankan fungsi pencari nama
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const namaTamu = urlParams.get('to');
         const elemenNama = document.getElementById('guest-name');
 
-if (namaTamu) {
-    // Mengubah kembali tanda _ menjadi spasi agar rapi di web
-    const namaRapi = decodeURIComponent(namaTamu).replace(/_/g, ' ');
-    document.getElementById('guest-name').innerText = namaRapi;
-}
-        
-    }
+        if (namaTamu && elemenNama) {
+            // Mengubah %20, + , dan _ menjadi spasi biasa agar rapi
+            const namaRapi = decodeURIComponent(namaTamu).replace(/[+_]/g, ' ');
+            elemenNama.innerText = namaRapi;
+            console.log("Nama berhasil diubah menjadi: " + namaRapi);
+        } else {
+            console.log("Parameter 'to' tidak ditemukan atau ID 'guest-name' salah.");
+        }
+    })();
+
 
     // Jalankan fungsi di atas segera setelah dokumen siap
     document.addEventListener("DOMContentLoaded", tampilkanNamaTamu);
