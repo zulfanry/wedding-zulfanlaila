@@ -560,23 +560,26 @@
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
 
-    // Fungsi ini akan langsung berjalan saat halaman dimuat
 
-    // Langsung jalankan fungsi pencari nama
-    (function() {
+    function tampilkanNamaTamu() {
         const urlParams = new URLSearchParams(window.location.search);
         const namaTamu = urlParams.get('to');
         const elemenNama = document.getElementById('guest-name');
 
         if (namaTamu && elemenNama) {
-            // Mengubah %20, + , dan _ menjadi spasi biasa agar rapi
-            const namaRapi = decodeURIComponent(namaTamu).replace(/[+_]/g, ' ');
+            // decodeURIComponent untuk menangani kode URL
+            // .replace(/_/g, ' ') untuk mengubah garis bawah menjadi spasi
+            // .replace(/\+/g, ' ') untuk mengubah tanda tambah menjadi spasi
+            let namaRapi = decodeURIComponent(namaTamu).replace(/_/g, ' ').replace(/\+/g, ' ');
+            
             elemenNama.innerText = namaRapi;
-            console.log("Nama berhasil diubah menjadi: " + namaRapi);
-        } else {
-            console.log("Parameter 'to' tidak ditemukan atau ID 'guest-name' salah.");
         }
-    })();
+    }
+
+    // Jalankan segera dan juga saat halaman selesai dimuat untuk memastikan
+    tampilkanNamaTamu();
+    window.addEventListener('DOMContentLoaded', tampilkanNamaTamu);
+
 
 
     // Jalankan fungsi di atas segera setelah dokumen siap
