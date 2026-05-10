@@ -235,24 +235,25 @@
     <div id="music-control" onclick="toggleMusic()"><i class="fas fa-play" id="music-icon"></i></div>
     <audio id="bg-audio" loop preload="auto"><source src="https://files.catbox.moe/b5fkrl.mp3" type="audio/mpeg"></audio>
 
-    <!-- HERO SECTION -->
-    <div class="hero" id="hero-section">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h2 style="letter-spacing: 5px; font-weight: 200;">THE WEDDING OF</h2>
-            <h1 style="font-size: clamp(3rem, 8vw, 5rem); margin: 10px 0; color: var(--gold-solid);">Zulfan <span class="gold">&</span> Laila</h1>
-            <p style="letter-spacing: 8px; margin-bottom: 40px;">31 MEI 2026</p>
-            
-            <div style="margin-bottom: 30px;">
-                <p style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.8;">KEPADA YTH </p>
-                <h3 id="guest-name" style="font-size: 1.5rem;">Bapak/Ibu/Saudara Undangan</h3>
-            </div>
-
-            <button class="btn-luxury" onclick="openInvitation()">
-                <i class="fa-solid fa-envelope-open-text" style="margin-right: 10px;"></i> Buka Undangan
-            </button>
+<!-- HERO SECTION -->
+<div class="hero" id="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <h2 style="letter-spacing: 5px; font-weight: 200;">THE WEDDING OF</h2>
+        <h1 style="font-size: clamp(3rem, 8vw, 5rem); margin: 10px 0; color: var(--gold-solid);">Zulfan <span class="gold">&</span> Laila</h1>
+        <p style="letter-spacing: 8px; margin-bottom: 40px;">31 MEI 2026</p>
+        
+        <div style="margin-bottom: 30px;">
+            <p style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.8;">KEPADA YTH </p>
+            <!-- ID guest-name inilah yang akan kita isi secara otomatis -->
+            <h3 id="guest-name" style="font-size: 1.5rem;">Bapak/Ibu/Saudara Undangan</h3>
         </div>
+
+        <button class="btn-luxury" onclick="openInvitation()">
+            <i class="fa-solid fa-envelope-open-text" style="margin-right: 10px;"></i> Buka Undangan
+        </button>
     </div>
+</div>
 
     <!-- MAIN CONTENT -->
     <main id="main-content">
@@ -558,6 +559,47 @@
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
+
+
+
+    // --- SKRIP NAMA UNDANGAN OTOMATIS ---
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Ambil parameter dari URL (contoh: ?to=Nama+Tamu)
+        const urlParams = new URLSearchParams(window.location.search);
+        const namaTamu = urlParams.get('to');
+
+        // 2. Jika ada nama di dalam URL, ganti teks "Bapak/Ibu/Saudara Undangan"
+        if (namaTamu) {
+            const displayNama = document.getElementById('guest-name');
+            if (displayNama) {
+                // Menghapus spasi berlebih atau karakter aneh dan menampilkannya
+                displayNama.innerText = decodeURIComponent(namaTamu);
+            }
+        }
+    });
+
+    // --- FUNGSI BUKA UNDANGAN (PASTIKAN SUDAH ADA) ---
+    function openInvitation() {
+        document.getElementById('hero-section').classList.add('open');
+        document.getElementById('main-content').classList.add('visible');
+        document.body.style.overflow = 'auto';
+        
+        // PENTING: Refresh AOS agar animasi tidak berantakan di mobile
+        if (typeof AOS !== 'undefined') {
+            setTimeout(() => {
+                AOS.refresh();
+            }, 100);
+        }
+
+        // Putar musik jika ada
+        if (typeof audio !== 'undefined') {
+            audio.play();
+            isPlaying = true;
+        }
+    }
+
+
+
 
 // Logika agar musik berhenti saat tab tidak aktif (Background)
 document.addEventListener("visibilitychange", function() {
