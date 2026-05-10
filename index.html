@@ -10,95 +10,225 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
 <style>
-        :root {
-            --black-matte: #0a0a0a;
-            --gold-solid: #c5a059;
-            --white-soft: #f4f4f4;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
-		
-		/* Efek Partikel Cahaya Emas */
-.gold-particle {
-    position: fixed;
-    top: -10px;
-    background: radial-gradient(circle, #c5a059 0%, rgba(197, 160, 89, 0) 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(105vh) translateX(20px);
+    :root {
+        --black-matte: #0a0a0a;
+        --gold-solid: #c5a059;
+        --white-soft: #f4f4f4;
+        --glass: rgba(255, 255, 255, 0.03);
     }
-}
 
-        /* PERBAIKAN POIN 2: Smooth Scroll */
-        html { scroll-behavior: smooth; }
+    /* Efek Partikel Cahaya Emas */
+    .gold-particle {
+        position: fixed;
+        top: -10px;
+        background: radial-gradient(circle, #c5a059 0%, rgba(197, 160, 89, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        animation: fall linear forwards;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--black-matte); color: var(--white-soft); font-family: 'Montserrat', sans-serif; overflow: hidden; line-height: 1.6; }
-        body::before { content: ""; position: fixed; top: 15px; bottom: 15px; left: 15px; right: 15px; border: 1px solid rgba(197, 160, 89, 0.3); pointer-events: none; z-index: 1001; }
-        h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', serif; }
-        .gold { color: var(--gold-solid); }
-
-        /* Hero Overlay */
-        .hero { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; z-index: 2000; transition: transform 1s ease-in-out; }
-        .hero.open { transform: translateY(-100%); }
-        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt') center/cover; transform: scale(1.1); animation: slowZoom 20s infinite alternate; }
-        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.15); } }
-        .hero-content { z-index: 10; padding: 20px; }
-
-        /* Main Content */
-        main { display: block; opacity: 0; transition: opacity 1s; }
-        main.visible { opacity: 1; }
-        section { position: relative; padding: 80px 5%; min-height: auto; display: flex; flex-direction: column; justify-content: center; }
-        
-        /* PERBAIKAN POSISI ANGKA: Agar tidak tertutup/ngepress */
-        .section-number { font-family: 'Cinzel', serif; font-size: 5rem; position: absolute; top: 20px; left: 5%; opacity: 0.1; color: var(--gold-solid); z-index: 1; }
-
-        /* Story & Photos */
-        .story-container { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; position: relative; z-index: 2; }
-        .story-img { flex: 1; min-width: 300px; }
-        .story-img img { width: 100%; height: 500px; object-fit: cover; border: 1px solid var(--gold-solid); }
-        
-        /* Gallery Grid */
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 30px; }
-        .gallery-item { height: 250px; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.2); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: grayscale(50%); }
-        .gallery-item img:hover { transform: scale(1.1); filter: grayscale(0%); }
-
-        /* Cards & Buttons */
-        .event-card { background: var(--glass); border: 1px solid rgba(197, 160, 89, 0.2); padding: 50px 30px; text-align: center; backdrop-filter: blur(5px); margin-bottom: 20px; }
-        .btn-luxury { display: inline-block; padding: 12px 35px; background: transparent; color: var(--gold-solid); border: 1px solid var(--gold-solid); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; cursor: pointer; transition: 0.4s; text-decoration: none; margin-top: 20px; }
-        .btn-luxury:hover:not(:disabled) { background: var(--gold-solid); color: black; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4); }
-        
-        /* PERBAIKAN POIN 4: Feedback Visual Tombol */
-        .btn-luxury:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
-
-        #music-control { position: fixed; bottom: 30px; left: 30px; z-index: 1500; background: rgba(0,0,0,0.6); border: 1px solid var(--gold-solid); width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: var(--gold-solid); }
-        
-        /* RESPONSIVE LAYOUT */
-        @media (max-width: 768px) { 
-            .hero-content h1 { font-size: 3rem; } 
-            .story-img img { height: 350px; } 
-            section { padding: 100px 5% 60px; } /* Tambah padding atas mobile agar angka section aman */
-            
-            /* PERBAIKAN TATA LETAK MEMPELAI (MOBILE) */
-            .groom-mobile { flex-direction: column !important; }
-            .groom-mobile .story-text { text-align: right !important; width: 100%; margin-bottom: 20px; }
-            .groom-mobile .story-img { align-self: flex-end; width: 85%; } /* Pria Rata Kanan */
-
-            .bride-mobile { flex-direction: column !important; }
-            .bride-mobile .story-text { text-align: left !important; width: 100%; margin-bottom: 20px; }
-            .bride-mobile .story-img { align-self: flex-start; width: 85%; } /* Wanita Rata Kiri */
-            
-            /* Perbaikan posisi angka di Section 4 agar tidak ngepress */
-            section:nth-of-type(4) { padding-top: 140px; }
-            section:nth-of-type(4) .section-number { top: 40px; }
+    @keyframes fall {
+        to {
+            transform: translateY(105vh) translateX(20px);
         }
-    </style>
+    }
+
+    /* Smooth Scroll */
+    html { scroll-behavior: smooth; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+        background-color: var(--black-matte); 
+        color: var(--white-soft); 
+        font-family: 'Montserrat', sans-serif; 
+        overflow-x: hidden; /* Mencegah geser horizontal */
+        line-height: 1.6; 
+    }
+
+    body::before { 
+        content: ""; 
+        position: fixed; 
+        top: 15px; bottom: 15px; left: 15px; right: 15px; 
+        border: 1px solid rgba(197, 160, 89, 0.3); 
+        pointer-events: none; 
+        z-index: 1001; 
+    }
+
+    h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .gold { color: var(--gold-solid); }
+
+    /* Hero Overlay */
+    .hero { 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; height: 100vh; 
+        display: flex; align-items: center; justify-content: center; 
+        text-align: center; overflow: hidden; 
+        z-index: 2000; 
+        transition: transform 1s ease-in-out; 
+    }
+    .hero.open { transform: translateY(-100%); }
+    .hero-bg { 
+        position: absolute; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt') center/cover; 
+        transform: scale(1.1); 
+        animation: slowZoom 20s infinite alternate; 
+    }
+    @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.15); } }
+    .hero-content { z-index: 10; padding: 20px; }
+
+    /* Main Content */
+    main { display: block; opacity: 0; transition: opacity 1s; }
+    main.visible { opacity: 1; }
+
+    /* PERBAIKAN BUG 1: Dasar Section dibuat Block agar AOS stabil */
+    section { 
+        position: relative; 
+        padding: 80px 5%; 
+        min-height: auto; 
+        display: block; 
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* Helper untuk konten yang ingin di tengah secara absolut */
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .section-number { 
+        font-family: 'Cinzel', serif; 
+        font-size: 5rem; 
+        position: absolute; 
+        top: 20px; left: 5%; 
+        opacity: 0.1; 
+        color: var(--gold-solid); 
+        z-index: 1; 
+    }
+
+    /* Story & Photos */
+    .story-container { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 40px; 
+        align-items: center; 
+        position: relative; 
+        z-index: 2; 
+        width: 100%;
+    }
+
+    .story-img { flex: 1; min-width: 300px; }
+    .story-img img { width: 100%; height: 500px; object-fit: cover; border: 1px solid var(--gold-solid); }
+
+    /* Gallery Grid */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 30px; }
+    .gallery-item { height: 250px; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.2); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: grayscale(50%); }
+    .gallery-item img:hover { transform: scale(1.1); filter: grayscale(0%); }
+
+    /* Cards & Buttons */
+    .event-card { 
+        background: var(--glass); 
+        border: 1px solid rgba(197, 160, 89, 0.2); 
+        padding: 40px 20px; 
+        text-align: center; 
+        backdrop-filter: blur(5px); 
+        margin-bottom: 20px; 
+        width: 100%;
+    }
+
+    .btn-luxury { 
+        display: inline-block; 
+        padding: 12px 35px; 
+        background: transparent; 
+        color: var(--gold-solid); 
+        border: 1px solid var(--gold-solid); 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        font-size: 0.75rem; 
+        cursor: pointer; 
+        transition: 0.4s; 
+        text-decoration: none; 
+        margin-top: 20px; 
+    }
+    .btn-luxury:hover:not(:disabled) { background: var(--gold-solid); color: black; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4); }
+    .btn-luxury:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+    #music-control { 
+        position: fixed; 
+        bottom: 30px; left: 30px; 
+        z-index: 1500; 
+        background: rgba(0,0,0,0.6); 
+        border: 1px solid var(--gold-solid); 
+        width: 45px; height: 45px; 
+        border-radius: 50%; 
+        display: none; 
+        align-items: center; justify-content: center; 
+        cursor: pointer; color: var(--gold-solid); 
+    }
+
+    /* Perbaikan Bug 2 & 3: Menghilangkan penumpukan padding pada nested section */
+    section section {
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: auto !important;
+    }
+
+    /* Memastikan form RSVP rapi */
+    #rsvp-form {
+        max-width: 100%;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    /* Perbaikan Bug 3: Barcode Tengah */
+    #guest-gallery .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* RESPONSIVE LAYOUT (MOBILE) */
+    @media (max-width: 768px) { 
+        .hero-content h1 { font-size: 3rem; } 
+        .story-img img { height: 350px; } 
+        
+        section { padding: 80px 20px; }
+        
+        /* Memaksa konten story-container di tengah di mobile */
+        .story-container {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+
+        /* Perbaikan khusus Section 1 agar teks/foto tidak melenceng */
+        #section-puisi .story-container,
+        #section-puisi div {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        /* Mematikan AOS penyebab geser horizontal sebelum animasi jalan */
+        [data-aos] {
+            pointer-events: none;
+        }
+        .aos-animate {
+            pointer-events: auto;
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -127,63 +257,126 @@
     <!-- MAIN CONTENT -->
     <main id="main-content">
         
-        <!-- SECTION 1: PUISI & FOTO -->
-        <section data-aos="fade-up">
-            <div class="story-container" style="justify-content: center; text-align: center;">
-                <div style="max-width: 600px;">
-<!-- PUISI JAWA -->
-            <h3 class="gold" style="font-style: italic; font-size: 2.5rem; margin-bottom: 15px;">"Manunggaling Katresnan"</h3>
-            <p style="font-size: 0.8rem; font-style: italic; line-height: 2; letter-spacing: 1px; color: var(--white-soft);">
-                Nalika raga kacancang ing donga,<br>
-                Nunggal siji ing kersaning Gusti.<br>
-                Mbangun bale wisma kanthi tulus becik,<br>
-                Setya sanyata nganti puputing yuswa.<br>
-                Mugi dadi mulyaning bebrayan,<br>
-                Sakinah, Mawaddah, lan Warahmah.
-            </p>
-
-
-                    <div style="margin-top: 40px; border: 1px solid var(--gold-solid); padding: 10px;">
-                        <img src="https://lh3.googleusercontent.com/d/1nebxUHWR1Z-zJjAKk7C-UxoJBDGw4Gwt" style="width: 100%; height: 300px; object-fit: cover;" alt="Prewedding">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: MEMPELAI -->
-<section id="mempelai" style="padding-top: 100px; overflow: hidden;">
-    <span class="section-number" style="top: 20px;">01</span>
-    
-    <div class="story-container" style="display: flex; align-items: center; justify-content: flex-end; gap: 15px; margin-bottom: 80px; flex-wrap: nowrap;">
-        <div class="story-text" data-aos="fade-right" style="flex: 1; text-align: right;">
-            <h3 class="gold" style="font-size: clamp(1.3rem, 4vw, 2rem); margin-bottom: 5px;">Achmad Zulfan Ramadhany</h3>
-            <p style="font-size: 0.9rem; color: #fff; line-height: 1.2;">Putra Bpk. Usman & Ibu Lilik Hartini</p>
-            <p style="font-size: 0.75rem; opacity: 0.6; color: #fff;">Prigen, Pasuruan</p>
-        </div>
-        
-        <div class="story-img" data-aos="zoom-in" style="flex: 0 0 48%; max-width: 280px; position: relative;">
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.8) 100%); z-index: 2; pointer-events: none;"></div>
-            <img src="https://lh3.googleusercontent.com/d/1fYywkeFbKHCevlWWHmjZB5kLYwZG39Ny" alt="Groom" style="width: 100%; border: 1px solid rgba(197, 160, 89, 0.5); display: block; position: relative; z-index: 1;">
-        </div>
-    </div>
-
-    <div class="story-container" style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; flex-direction: row-reverse; flex-wrap: nowrap;">
-        <div class="story-text" data-aos="fade-left" style="flex: 1; text-align: left;">
-            <h3 class="gold" style="font-size: clamp(1.3rem, 4vw, 2.2rem); margin-bottom: 5px;">Laila Chusnul Ramadhan</h3>
-            <p style="font-size: 0.9rem; color: #fff; line-height: 1.2;">Putri Alm. Bpk Sunarto & Ibu Ismiasih</p>
-            <p style="font-size: 0.75rem; opacity: 0.6; color: #fff;">Krembung, Sidoarjo</p>
-        </div>
-
-        <div class="story-img" data-aos="zoom-in" style="flex: 0 0 48%; max-width: 280px; position: relative;">
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.8) 100%); z-index: 2; pointer-events: none;"></div>
-            <img src="https://lh3.googleusercontent.com/d/1SH0BBV6YeVuD2mPOvn7ZEZCZvIqQaddA" alt="Bride" style="width: 100%; border: 1px solid rgba(197, 160, 89, 0.5); display: block; position: relative; z-index: 1;">
+<!-- SECTION 1: PUISI & FOTO -->
+<section data-aos="fade-up" style="display: flex; align-items: center; justify-content: center;">
+    <div class="story-container" style="width: 100%; max-width: 600px; margin: 0 auto; text-align: center; display: block;">
+        <h3 class="gold" style="font-style: italic; font-size: 2.2rem; margin-bottom: 15px;">"Manunggaling Katresnan"</h3>
+        <p style="font-size: 0.85rem; font-style: italic; line-height: 2; letter-spacing: 1px; color: var(--white-soft); padding: 0 10px;">
+            Nalika raga kacancang ing donga,<br>
+            Nunggal siji ing kersaning Gusti.<br>
+            Mbangun bale wisma kanthi tulus becik,<br>
+            Setya sanyata nganti puputing yuswa.<br>
+            Mugi dadi mulyaning bebrayan,<br>
+            Sakinah, Mawaddah, lan Warahmah.
+        </p>
+        <div style="margin-top: 40px; border: 1px solid var(--gold-solid); padding: 10px; display: inline-block; width: 90%;">
+            <img src="https://lh3.googleusercontent.com/d/1blXmIQCB64zctvH3_u-I-WcaE2IVBi8t" style="width: 100%; height: auto; max-height: 350px; object-fit: cover;" alt="Prewedding">
         </div>
     </div>
 </section>
 
+<!-- SECTION 2: MEMPELAI -->
+<section id="mempelai">
+    
+    <!-- Groom Section -->
+    <div class="story-container">
+        <div class="story-text" data-aos="fade-right" style="text-align: right;">
+            <h3 class="gold" style="font-size: 2rem; margin-bottom: 5px;">Achmad Zulfan Ramadhany</h3>
+            <p style="font-weight: 500;">Putra Bpk. Usman & Ibu Lilik Hartini</p>
+            <p style="font-size: 0.8rem; opacity: 0.6; letter-spacing: 1px;">PRIGEN, PASURUAN</p>
+        </div>
+        <div class="story-img" data-aos="zoom-in">
+            <div class="img-wrapper">
+                <img src="https://lh3.googleusercontent.com/d/1fYywkeFbKHCevlWWHmjZB5kLYwZG39Ny" alt="Groom">
+                <div class="overlay-frame"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bride Section -->
+    <div class="story-container" style="margin-top: 60px; flex-direction: row-reverse;">
+        <div class="story-text" data-aos="fade-left">
+            <h3 class="gold" style="font-size: 2rem; margin-bottom: 5px;">Laila Chusnul Ramadhan</h3>
+            <p style="font-weight: 500;">Putri Alm. Bpk Sunarto & Ibu Ismiasih</p>
+            <p style="font-size: 0.8rem; opacity: 0.6; letter-spacing: 1px;">KREMBUNG, SIDOARJO</p>
+        </div>
+        <div class="story-img" data-aos="zoom-in">
+            <div class="img-wrapper">
+                <img src="https://lh3.googleusercontent.com/d/1SH0BBV6YeVuD2mPOvn7ZEZCZvIqQaddA" alt="Bride">
+                <div class="overlay-frame"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .story-img {
+        max-width: 300px;
+        position: relative;
+    }
+
+    .img-wrapper {
+        position: relative;
+        border-radius: 150px 150px 0 0; /* Membuat bagian atas melengkung (elegan) */
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        border: 2px solid #d4af37; /* Border emas tipis */
+    }
+
+    .img-wrapper img {
+        width: 100%;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    /* Efek Overlay Gradasi */
+    .overlay-frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Memberikan sedikit efek gelap di bawah agar teks putih (jika ada) menonjol */
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,0.3) 100%);
+        pointer-events: none;
+    }
+
+    /* Efek Hover: Foto sedikit membesar */
+    .img-wrapper:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Responsive untuk Mobile */
+@media (max-width: 768px) {
+    /* Memaksa kontainer menjadi satu kolom dan rata tengah */
+    .story-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        gap: 20px !important;
+    }
+
+    /* Memastikan area teks memenuhi lebar dan rata tengah */
+    .story-text {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 0 15px !important;
+    }
+
+    /* Memastikan foto berada di tengah */
+    .story-img {
+        width: 85% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+    }
+}
+</style>
+
         <!-- SECTION 3: GALERI FOTO -->
         <section style="background: #0d0d0d;">
-            <span class="section-number">02</span>
+	    <section style="padding-top: 185px; padding-bottom: 80px;"> <span class="section-number" style="top: 40px; left: 5%; z-index: 1;">02</span> <div class="story-container" style="position: relative; z-index: 2;">
+        <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
             <h2 class="gold" style="text-align: center; font-size: 2.5rem; margin-bottom: 10px;">Our Gallery</h2>
             <p style="text-align: center; font-size: 0.8rem; opacity: 0.6; letter-spacing: 3px; margin-bottom: 30px;">MOMENTS OF LOVE</p>
 
@@ -200,7 +393,8 @@
 
         <!-- SECTION 4: ACARA -->
         <section>
-            <span class="section-number">03</span>
+	     <section style="padding-top: 185px; padding-bottom: 80px;"> <span class="section-number" style="top: 40px; left: 5%; z-index: 1;">03</span> <div class="story-container" style="position: relative; z-index: 2;">
+        <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
             <h2 class="gold" style="text-align: center; font-size: 2.5rem; margin-bottom: 40px;">Wedding Event</h2>
             <div class="event-grid">
                 <div class="event-card" data-aos="fade-up">
@@ -220,22 +414,23 @@
         </section>
 
         <!-- RSVP & GIFT -->
-        <section>
-            <section style="padding-top: 185px; padding-bottom: 80px;"> <span class="section-number" style="top: 40px; left: 5%; z-index: 1;">04</span> <div class="story-container" style="position: relative; z-index: 2;">
-        <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
-                <div class="event-card" style="flex: 1.5; text-align: left;" data-aos="fade-up">
-                    <h2 class="font-serif gold">RSVP & Wishes</h2>
-                    <form id="rsvp-form" style="margin-top: 25px;">
-                        <input type="text" id="nama" placeholder="Nama Anda" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:15px; outline:none;" required>
+<section>
+    <span class="section-number">04</span>
+    <div class="story-container" style="justify-content: center;">
+        <div class="event-card" data-aos="fade-up">
+            <h2 class="font-serif gold" style="text-align: center;">RSVP & Wishes</h2>
+            <form id="rsvp-form" style="margin-top: 25px; text-align: left;">
+                <input type="text" id="nama" placeholder="Nama Anda" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:15px; outline:none;" required>
                         <select id="kehadiran" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:15px; outline:none;">
                             <option value="Hadir" style="background:#0a0a0a;">Saya Akan Hadir</option>
                             <option value="Berhalangan" style="background:#0a0a0a;">Maaf, Berhalangan</option>
                         </select>
                         <textarea id="pesan" placeholder="Ucapan & Doa Restu" rows="3" style="width:100%; background:none; border:none; border-bottom:1px solid #444; padding:12px; color:white; margin-bottom:20px; outline:none;" required></textarea>
-                        <button type="submit" id="btn-submit" class="btn-luxury" style="width: 100%;">Kirim Ucapan</button>
-                    </form>
-                    <div id="container-pesan"></div>
-                </div>
+<button type="submit" id="btn-submit" class="btn-luxury" style="width: 100%;">Kirim Ucapan</button>
+            </form>
+            <div id="container-pesan"></div>
+        </div>
+    </div>
 
                 <div class="event-card" style="flex: 1;" data-aos="fade-up" data-aos-delay="200">
                     <i class="fa-solid fa-gift gold" style="font-size: 2rem; margin-bottom: 20px;"></i>
@@ -268,11 +463,11 @@
 		
 		<!-- SECTION 5: GALERI FOTO TAMU -->
 		
-<section id="guest-gallery" class="gallery-section" style="padding: 60px 20px; text-align: center; background-color: #000; color: #fff;" data-aos="fade-up">
+<section id="guest-gallery" class="gallery-section" style="padding: 60px 20px; text-align: center; justify-content: center; background-color: #000; color: #fff;" data-aos="fade-up">
     <div class="container">
-        <h2 style="font-family: 'Playfair Display', serif; color: #c5a059; margin-bottom: 10px;">Galeri Foto Tamu</h2>
-        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px;">Saksikan momen pernikahan ini bersama Bapak/Ibu tamu undangan</p>
-        <p style="font-size: 0.8rem; color: #c5a059; font-weight: bold; margin-bottom: 30px; letter-spacing: 1px;">
+        <h2 style="text-align: center; font-family: 'Playfair Display', serif; color: #c5a059; margin-bottom: 10px;">Galeri Foto Tamu</h2>
+        <p style="text-align: center; font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px;">Saksikan momen pernikahan ini bersama Bapak/Ibu tamu undangan</p>
+        <p style="text-align: center; font-size: 0.8rem; color: #c5a059; font-weight: bold; margin-bottom: 30px; letter-spacing: 1px;">
             <i class="fa-regular fa-calendar-check"></i> AKAN KAMI RILIS PADA 3 JUNI 2026
         </p>
         
@@ -308,30 +503,31 @@
 
 <section data-aos="fade-up" style="text-align: center; padding: 120px 5%; position: relative; overflow: hidden;">
 
-    <div style="margin-bottom: 60px;">
-        <h2 class="gold" style="font-size: 2.5rem; margin-bottom: 25px; letter-spacing: 3px;">Terima Kasih</h2>
+    <!-- Bagian Terima Kasih (Sekarang dengan Border & Glassmorphism) -->
+    <div style="background: var(--glass); border: 1px solid rgba(197, 160, 89, 0.2); backdrop-filter: blur(10px); padding: 50px 30px; max-width: 800px; margin: 0 auto 60px; border-radius: 2px;">
+        <h2 class="gold" style="font-size: 2rem; margin-bottom: 25px; letter-spacing: 3px;">Terima Kasih</h2>
         <p style="max-width: 650px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; color: var(--white-soft); opacity: 0.9; font-style: italic;">
             "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kami."
         </p>
     </div>
 
-    <div style="background: var(--glass); border: 1px solid rgba(197, 160, 89, 0.2); backdrop-filter: blur(10px); padding: 50px 30px; max-width: 800px; margin: 0 auto; border-radius: 2px;">
+    <!-- Bagian Doa Munajat (Sekarang Tanpa Border) -->
+    <div style="max-width: 800px; margin: 0 auto;">
         
         <i class="fa-solid fa-hands-praying gold" style="font-size: 1.5rem; margin-bottom: 20px; opacity: 0.8;"></i>
         <h3 class="gold" style="font-size: 2rem; margin-bottom: 30px; letter-spacing: 2px;">Doa Munajat</h3>
         
         <div style="width: 50px; height: 1px; background: var(--gold-solid); margin: 0 auto 30px; opacity: 0.5;"></div>
 
-        <div style="font-size: 0.95rem; line-height: 2; color: var(--white-soft); text-align: center; letter-spacing: 0.5px;">
+        <div style="font-size: 0.75rem; line-height: 2; color: var(--white-soft); text-align: center; letter-spacing: 0.5px;">
             <p style="font-weight: 600; margin-bottom: 20px; color: var(--gold-solid);">Ya Allah Ya Rahman Ya Rahim Ya Hayyu Ya Qayyum Ya Dzaljalal wal Ikram</p>
-            
             
             <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
                 Ya Allah ampunilah sekalian dosa-dosa kami, ampunilah dosa kedua orang tua kami, serta umat Muhammad menyeluruh dan merata di muka bumi ini.
             </p>
 
             <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
-                Sehatkanlah dan panjangkanlah usia <strong>Guru kami</strong> agar lebih lama membimbing dan menuntun kami ke jalan-Mu yang lurus. Selamat sejahterahkanlah beliau beserta keluarga dan kerabatnya.
+                Sehatkanlah dan panjangkanlah usia Guru kami agar lebih lama membimbing dan menuntun kami ke jalan-Mu yang lurus. Selamat sejahterahkanlah beliau beserta keluarga dan kerabatnya.
             </p>
 
             <p style="margin-bottom: 15px; opacity: 0.85; font-style: italic;">
@@ -362,6 +558,24 @@
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
+
+// Logika agar musik berhenti saat tab tidak aktif (Background)
+document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+        // Jika pengguna pindah tab atau minimize
+        if (isPlaying) {
+            audio.pause();
+        }
+    } else {
+        // Jika pengguna kembali ke tab undangan
+        // Hanya putar kembali jika status terakhir adalah 'isPlaying'
+        if (isPlaying) {
+            audio.play().catch(error => {
+                console.log("Autoplay dicegah oleh browser, tunggu interaksi user.");
+            });
+        }
+    }
+});
 
 function createGoldParticle() {
     const particle = document.createElement('div');
@@ -404,23 +618,26 @@ setInterval(createGoldParticle, 200);
     AOS.init({ duration: 1000, once: true });
 
     // 3. LOGIC BUKA UNDANGAN
-    function openInvitation() {
-        // Menghilangkan overlay hero
-        document.getElementById('hero-section').classList.add('open');
-        // Memunculkan konten utama
-        document.getElementById('main-content').classList.add('visible');
-        // Mengaktifkan scroll pada body
-        document.body.style.overflow = 'auto';
-        // Memunculkan tombol musik
-        document.getElementById('music-control').style.display = 'flex';
-        // Memutar musik otomatis saat dibuka
-        if (!isPlaying) toggleMusic();
-    }
+function openInvitation() {
+    document.getElementById('hero-section').classList.add('open');
+    document.getElementById('main-content').classList.add('visible');
+    document.body.style.overflow = 'auto';
+    document.getElementById('music-control').style.display = 'flex';
+    
+    // Mulai musik saat undangan dibuka
+    audio.play();
+    icon.classList.replace("fa-play", "fa-pause");
+    isPlaying = true;
+
+    setTimeout(() => {
+        AOS.refresh();
+    }, 100);
+}
 
     // 4. LOGIC MUSIK
     let audio = document.getElementById("bg-audio");
     let icon = document.getElementById("music-icon");
-    let isPlaying = false;
+    let isPlaying = true;
 
     function toggleMusic() {
         if (isPlaying) { 
@@ -501,7 +718,7 @@ setInterval(createGoldParticle, 200);
             body: JSON.stringify(formData)
         })
         .then(res => {
-            alert("Alhamdulillah, ucapan dan doa Anda telah tersimpan.");
+            alert("Terima kasih, ucapan dan doa Anda telah tersimpan.");
             rsvpForm.reset(); // Kosongkan form
             loadWishes();    // Muat ulang daftar ucapan agar yang baru muncul
         })
