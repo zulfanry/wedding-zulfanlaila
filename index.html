@@ -572,12 +572,12 @@
         // 3. Cari elemen <h3> dengan ID "guest-name"
         const elemenNama = document.getElementById('guest-name');
 
-        if (namaTamu && elemenNama) {
-            // Bersihkan teks (mengubah + atau %20 menjadi spasi biasa)
-            const namaBersih = decodeURIComponent(namaTamu);
-            // Tampilkan nama di website
-            elemenNama.innerText = namaBersih;
-        }
+if (namaTamu) {
+    // Mengubah kembali tanda _ menjadi spasi agar rapi di web
+    const namaRapi = decodeURIComponent(namaTamu).replace(/_/g, ' ');
+    document.getElementById('guest-name').innerText = namaRapi;
+}
+        
     }
 
     // Jalankan fungsi di atas segera setelah dokumen siap
